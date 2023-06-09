@@ -1,0 +1,171 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{bbold}
+\usepackage[margin=25mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{gensymb}
+\usepackage{parskip}
+
+\title{An Investigation into Modelling Traffic Light Controlled Intersection with Queueing Systems}
+\author{Group 8}
+\date{24 March 2023}
+
+\begin{document}
+	
+	\maketitle
+	\section*{Contributors}
+	\begin{center}
+	\begin{tabular}{ c c c }
+		\textbf{Name} & \textbf{Email} & \textbf{ORCID} \\
+		Sam Deacon & deaconsamu@myvuw.ac.nz & 0009-0006-2528-630X \\
+		Benjamin Hong & hongbenj@myvuw.ac.nz & 0000-0001-8308-5473 \\
+		James La & lajame@myvuw.ac.nz & 0009-0005-3212-2242 \\
+		Aidan Robins & robinsaida@myvuw.ac.nz & 0009-0002-2729-6764 \\
+		Matthew Smaill & smaillmatt@myvuw.ac.nz & 0009-0009-2345-6055 \\
+	\end{tabular}
+	\end{center}
+	
+	\pagebreak
+	
+	\section{Introduction}
+	The queuing system of a traffic light plays a crucial role in managing the flow of vehicles at intersections. In this report, we focus on modeling the queuing system of the traffic light located at the intersection of Vivian and Taranaki Street, with the objective of this study being to analyze the efficiency and performance of the queuing system and the traffic flow in Wellington. 
+	
+	\subsection{Traffic Light Functions}
+	\begin{itemize}
+	\item When the traffic light is green, the server is ready to serve vehicles that arrive at the intersection.
+	\item Vehicles that arrive at the intersection while the traffic light is green are served immediately and can proceed through the intersection.
+	\item Vehicles that arrive at the intersection while the traffic light is yellow can still proceed through the intersection, but they must do so quickly before the light turns red and the server stops serving vehicles.
+	\item When the traffic light turns red, the server stops serving vehicles, and all vehicles that arrive at the intersection must wait in the queue.
+	\item Vehicles in the queue wait for the traffic light to turn green again and for the server to become available to serve them.
+	\item Once it has turned Green, the vehicles are still in the queue until they have passed over the traffic light. 
+	\end{itemize}
+	
+	\subsection{Our System}
+	In this particular traffic light system, there are two separate lanes, referred to as the left lane and the right lane. Each lane acts as a separate queue, and the traffic light acts as the two servers, serving both queues.
+	
+	In this system, the traffic light's duration would be two minutes for the green phase and one minute for the red phase, based on our surveying data. However, the system was vulnerable to two common issues: jockeying and balking.
+	
+	Jockeying refers to vehicles occasionally changing lanes while waiting in the queue, causing disruptions to the flow. Additionally, vehicles would sometimes exit the system without passing through the intersection (balking). Instead, they would turn onto a side road or enter a driveway before reaching the intersection.
+	
+	In the following sections of this report, we will delve into the details of our queueing system model for this traffic light. We will analyze the performance metrics, such as queue length, waiting times, and service times, to gain insights into the effectiveness of the system. 
+	
+	\pagebreak
+	\subsection{Literature}
+	Modelling traffic light systems have been a heavily researched topic due to the real-world need for optimizing transport infrastructure, with some literature (Roy, W.) dating back to 1930. The majority of existing literature (Darroch, J. N., Newell, G. F.) appears to take into account the fixed-cycle nature of traffic lights and require complex equations that are incomprehensible to our team, and we expect this to be the case for the majority of undergraduate students. Our rudimentary analysis of the traffic light queuing system sets our work apart from the existing literature by creating a more accessible and easily understood model for our intended audience --- fellow undergraduate students. 
+	
+	\section{Data Collection}
+	To gather the necessary data for our analysis, we implemented a systematic approach involving teams of two individuals. Each team was assigned to one of the two lanes at the Vivian and Taranaki Street intersection - the right lane or the left lane. This division allowed us to capture the dynamics of both queues and obtain a comprehensive understanding of the traffic flow.
+	
+	Within each team, one team member was responsible for tracking the service times. These service times represent the instances when vehicles were served by the traffic light and successfully passed through the intersection.
+	
+	Simultaneously, the other team member focused on tracking the arrival times. This involved documenting the times at which vehicles arrived at the traffic light or joined the queue, waiting for their turn to be served. 
+	
+	\section{Data Analysis}
+	In the exploratory Data Analysis section, our primary focus lies on investigating the characteristics of the data through various statistical measurements and tests. Specifically, we delve into the analysis of inter-arrival times, inter-departure times, and the application of a chi-squared test to evaluate the distribution.
+	
+	Through the exploration of inter-arrival and inter-departure times, as well as the application of a chi-squared test, we aim to gain a comprehensive understanding of the underlying patterns, dependencies, and distribution characteristics of the data. These insights will not only aid in interpreting the data but also provide a solid foundation for further analysis and decision-making in our models.
+	
+	\subsection{Inter-arrival Times}
+	\begin{figure}
+		\centering
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{01.png}
+			\caption{Left Lane}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{02.png}
+			\caption{Right Lane}
+		\end{minipage}
+	\end{figure}
+	
+	The analysis of the inter-arrival times depicted in Figures 1 and 2 uncovers an intriguing similarity between the left and right hand lanes. It is evident that a considerable portion of inter-arrival times for both lanes is less than 5 seconds, indicating a high volume of closely spaced traffic passing through the system. This can also be shown by a left-skewed pattern shown in both graphs, suggesting that, on average, there are smaller intervals between vehicles.
+	
+	Interestingly, both lanes exhibit a minor concentration of values observed around 40 seconds between arrivals, which could be attributed to factors like jockeying traffic lights before this system or other conditions preceding our system. Upon comparing different distribution models, the exponential distribution seems to provide a better fit for the data, outperforming the Erlang distribution.
+	
+	\subsection{Inter-departure Times}
+	\begin{figure}[h]
+		\centering
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{03.png}
+			\caption{Left Lane}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{04.png}
+			\caption{Right Lane}
+		\end{minipage}
+	\end{figure}
+	
+	Just like the inter-arrival times, the left and right lanes behave pretty similarly with their inter-departure times; Departure times are mostly near-instantaneous when the light is green or with a small peak around the 60 second mark. This makes sense with both the system and the hypothesis, that the light was red for 60 seconds (and no one can depart), or when it is green, cars get served immediately. 
+	
+	The values depicted on the graph between 0 and 60 seconds likely represent a combination of waiting times influenced by various factors and traffic conditions. These values indicate a moderate range of delays encountered by drivers, including the time required for the queue to clear once the light changes to green, or times in between cars entering (and therefore leaving) the system.
+	
+*-5=2It is important to acknowledge, however, that some vehicles experience longer waiting times than 60 seconds (time of the red light). This could be attributed to their arrival during the yellow phase or when no cars were present before the light turned red.
+	
+	The graph illustrates a distribution that consists of a blend of two probability distributions: exponential (65\% exponential distribution with a mean of 11 s) and normal (35\% normal distribution with a mean of 58 s). Considering the graph, this distribution choice appears reasonable, although it seems to fit the right lane more closely than the left lane. It is worth noting that this disparity could be due to the larger sample size available for the right lane compared to the left lane.
+	
+	\subsection{System as a Whole}
+	\begin{figure}[h]
+		\centering
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{05.png}
+			\caption{Inter-arrival Times}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{06.png}
+			\caption{Inter-departure Times}
+		\end{minipage}
+	\end{figure}
+	\[ \lambda = 0.4040 \]
+	\[ \mu = 0.5090 \]
+	
+	Figures 5 and 6 show the system as a whole. It also shows that the inter-departure rate is faster than the inter-arrival rate, indicating that this is a steady system.  
+	
+	\subsection{Chi-Squared Test}
+	For our Chi Squared goodness of fit test, we defined a mixture distribution of 65\% exponential and 35\% normal, and tested if our service times in each lane fit this distribution. Service times were calculated as departure time in total seconds minus arrival time in total seconds.
+	
+	The data was processed using a python script, and the service times categorised into three categories.
+	\begin{center}\begin{tabular}{|| c | c ||}
+		\hline
+		Category & Times (seconds) \\
+		\hline
+		Slow & $t<20$ \\
+		Medium & $20\leq t<40$ \\
+		Fast & $t\geq40$ \\
+		\hline
+	\end{tabular}\end{center}
+	Null hypothesis: the distribution of data is not the same as the distribution of expected values.
+	
+	Alternative hypothesis: the distribution of the data is the same as the distribution of expected values.
+	\begin{figure}[h]
+		\centering
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{08.png}
+			\caption{Left Lane}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{07.png}
+			\caption{Right Lane}
+		\end{minipage}
+	\end{figure}	
+		
+	For the right lane, our Chi Square statistic was 0.53 with a p-value of 0.233.
+	Our test had 2 degrees of freedom (3 categories–1) which meant a critical value of 5.99. Since the Chi Square statistic was less than the critical value, we failed to reject the null hypothesis and had no evidence that the data did not follow the mixture distribution we defined.  These results are consistent with Figure 8 --- the right lane service times, plotted with the distribution line, showing a very close fit.
+	
+		
+	\begin{thebibliography}{9}
+	\bibitem{onTheTLQ}
+	Darroch, J. N. “On the Traffic-Light Queue.” The Annals of Mathematical Statistics, vol. 35, no. 1, 1964, pp. 380–88. JSTOR, http://www.jstor.org/stable/2238049. Accessed 30 May 2023.
+	
+	\bibitem{ApproxQueues}
+	Newell, G. F. “Approximation Methods for Queues with Application to the Fixed-Cycle Traffic Light.” SIAM Review, vol. 7, no. 2, 1965, pp. 223–40. JSTOR, http://www.jstor.org/stable/2027270. Accessed 30 May 2023.
+	
+	\bibitem{1930}
+	Roy, W. (1930). Traffic Control in Edinburgh. The Police Journal, 3(2), 262–276. https://doi.org/10.1177/0032258X3000300211
+	\end{thebibliography}
+	
+\end{document}
